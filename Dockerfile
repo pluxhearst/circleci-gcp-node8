@@ -12,20 +12,33 @@ RUN apt-get update && apt-get install -y
 
 ENV CLOUD_SDK_VERSION 178.0.0
 
-RUN curl
-RUN gcc
-RUN python-dev
-RUN python-setuptools
-RUN apt-transport-https
+RUN apt-get install -y curl
+RUN apt-get install -y gcc
+RUN apt-get install -y python-dev
+RUN apt-get install -y python-setuptools
+RUN apt-get install -y apt-transport-https
 
-RUN lsb-release
-RUN openssh-client
-RUN git
-RUN easy_install -U pip
-RUN pip install -U crcmod
+RUN apt-get install -y lsb-release
+RUN apt-get install -y openssh-client
+RUN apt-get install -y git
+##RUN apt-get install -y easy_install -U pip
+##RUN pip install -U crcmod
 
-RUN apt-get update && apt-get install -y
+RUN apt-get update
 
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
 RUN echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+RUN sudo apt-get install -y google-cloud-sdk
+RUN sudo apt-get install -y google-cloud-sdk-app-engine-python
+RUN sudo apt-get install -y google-cloud-sdk-app-engine-python-extras
+RUN sudo apt-get install -y google-cloud-sdk-app-engine-java
+RUN sudo apt-get install -y google-cloud-sdk-app-engine-go
+RUN sudo apt-get install -y google-cloud-sdk-datalab
+RUN sudo apt-get install -y google-cloud-sdk-datastore-emulator
+RUN sudo apt-get install -y google-cloud-sdk-pubsub-emulator
+RUN sudo apt-get install -y google-cloud-sdk-cbt
+RUN sudo apt-get install -y google-cloud-sdk-cloud-build-local
+RUN sudo apt-get install -y google-cloud-sdk-bigtable-emulator
+RUN sudo apt-get install -y kubectl
