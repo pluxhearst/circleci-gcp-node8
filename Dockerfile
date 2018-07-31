@@ -6,7 +6,7 @@
 
 FROM docker:17.12.0-ce as static-docker-source
 
-FROM debian:jessie
+FROM debian:stretch
 
 MAINTAINER pierolucianihearst <piero.luciani.hearst@gmail.com>
 
@@ -17,6 +17,8 @@ COPY --from=static-docker-source /usr/local/bin/docker /usr/local/bin/docker
 RUN apt-get -qqy update && apt-get install -qqy \
         curl \
         gcc \
+        php5 \
+        php5-cli \
         python-dev \
         python-setuptools \
         apt-transport-https \
@@ -33,7 +35,7 @@ RUN apt-get -qqy update && apt-get install -qqy \
         google-cloud-sdk-app-engine-python=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-python-extras=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-app-engine-java=${CLOUD_SDK_VERSION}-0 \
-        google-cloud-sdk-app-engine-go=${CLOUD_SDK_VERSION}-0 \
+        #google-cloud-sdk-app-engine-go=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-datalab=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-datastore-emulator=${CLOUD_SDK_VERSION}-0 \
         google-cloud-sdk-pubsub-emulator=${CLOUD_SDK_VERSION}-0 \
@@ -144,10 +146,10 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-RUN apt-get install -y php5 php5-cli
+#RUN apt-get install -y php5 php5-cli
 
 RUN npm install --save composer
 
-RUN apt-get update && apt-get install -y
+#RUN apt-get update && apt-get install -y
 
 CMD [ "node" ]
