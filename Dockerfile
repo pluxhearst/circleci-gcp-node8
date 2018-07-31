@@ -56,6 +56,9 @@ RUN apt-get update \
     net-tools netcat unzip zip bzip2 apt-transport-https build-essential libssl-dev \
     curl g++ gcc git make wget && rm -rf /var/lib/apt/lists/* && apt-get -y autoclean
 
+## get composer
+RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
+
 # Set timezone to UTC by default
 RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
