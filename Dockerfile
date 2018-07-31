@@ -1,4 +1,4 @@
-FROM scratch
+FROM debian:scratch
 
 
 MAINTAINER pierolucianihearst <piero.luciani.hearst@gmail.com>
