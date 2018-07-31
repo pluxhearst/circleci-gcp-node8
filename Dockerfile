@@ -10,7 +10,6 @@ FROM debian:jessie
 
 MAINTAINER pierolucianihearst <piero.luciani.hearst@gmail.com>
 
-
 ENV CLOUD_SDK_VERSION 206.0.0
 
 COPY --from=static-docker-source /usr/local/bin/docker /usr/local/bin/docker
