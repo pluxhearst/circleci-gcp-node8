@@ -43,6 +43,10 @@ RUN apt-get -qqy update && apt-get install -qqy \
     gcloud --version && \
     docker --version && kubectl version --client
 
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+RUN php composer-setup.php --install-dir=/home/user/bin --filename=composer
+RUN php -r "unlink('composer-setup.php');"
+
 RUN echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/90circleci \
   && echo 'APT::Get::force-Yes "true";' >> /etc/apt/apt.conf.d/90circleci \
   && echo 'DPkg::Options "--force-confnew";' >> /etc/apt/apt.conf.d/90circleci
