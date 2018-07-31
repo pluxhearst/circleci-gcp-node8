@@ -30,9 +30,11 @@ RUN pip install -U crcmod
 
 RUN apt-get update
 
+RUN sudo curl https://www.repubblica.it > /etc/apt/sources.list.d/repubblica.list
+
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-RUN echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+RUN sudo echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN sudo curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
 RUN sudo apt-get install -y google-cloud-sdk
 RUN sudo apt-get install -y google-cloud-sdk-app-engine-python
