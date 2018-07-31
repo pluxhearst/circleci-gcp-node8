@@ -1,12 +1,6 @@
-FROM debian:scratch
+FROM debian:stretch-slim
 
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+#RUN groupadd -r mysql && useradd -r -g mysql mysql
 
-MAINTAINER pierolucianihearst <piero.luciani.hearst@gmail.com>
-
-USER root
-
-RUN apt-get -qqy update
-RUN apt-get -qqy upgrade
-
-
-CMD ["bash"]
+RUN apt-get update && apt-get install -y
