@@ -140,11 +140,4 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-USER root
-RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
-RUN sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN rm /tmp/composer-setup.php
-
-USER circleci
-
 CMD [ "node" ]
