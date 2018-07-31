@@ -6,7 +6,7 @@
 
 FROM docker:17.12.0-ce as static-docker-source
 
-FROM debian:stretch
+FROM debian:jessie
 
 MAINTAINER pierolucianihearst <piero.luciani.hearst@gmail.com>
 
