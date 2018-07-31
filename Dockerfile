@@ -14,7 +14,7 @@ ENV CLOUD_SDK_VERSION 206.0.0
 
 COPY --from=static-docker-source /usr/local/bin/docker /usr/local/bin/docker
 
-RUN sudo apt-get -qqy update && apt-get install -qqy \
+RUN apt-get -qqy update && apt-get install -qqy \
         curl \
         gcc \
         python-dev \
@@ -144,10 +144,9 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-RUN sudo apt-get install -y php5 php5-cli
+RUN apt-get install -y php5 php5-cli
 
 RUN npm install --save composer
-
 
 RUN apt-get update && apt-get install -y
 
