@@ -1,57 +1,50 @@
-FROM debian:stretch-slim
+#FROM debian:stretch-slim
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 #RUN groupadd -r mysql && useradd -r -g mysql mysql
 
+
+FROM docker:17.12.0-ce as static-docker-source
+
+FROM debian:jessie
+
 MAINTAINER pierolucianihearst <piero.luciani.hearst@gmail.com>
 
-##USER root
 
-RUN apt-get update && apt-get install -y
+ENV CLOUD_SDK_VERSION 206.0.0
 
-
-ENV CLOUD_SDK_VERSION 178.0.0
-
-RUN apt-get install -y curl
-RUN apt-get install -y gcc
-RUN apt-get install -y python-dev
-RUN apt-get install -y python-setuptools
-RUN apt-get install -y apt-transport-https
-
-RUN apt-get install -y lsb-release
-RUN apt-get install -y openssh-client
-RUN apt-get install -y git
-
-RUN easy_install -U pip
-RUN pip install -U crcmod
-
-##RUN apt-get install -y easy_install -U pip
-##RUN pip install -U crcmod
-
-RUN apt-get update
-
-#RUN sudo curl https://www.repubblica.it > /etc/apt/sources.list.d/repubblica.list
-
-RUN sudo export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-RUN sudo echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-RUN sudo curl http://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-RUN sudo apt-get update -y && apt-get install google-cloud-sdk -y
-
-RUN sudo apt-get install -y google-cloud-sdk-app-engine-python
-RUN sudo apt-get install -y google-cloud-sdk-app-engine-python-extras
-RUN sudo apt-get install -y google-cloud-sdk-app-engine-java
-RUN sudo apt-get install -y google-cloud-sdk-app-engine-go
-RUN sudo apt-get install -y google-cloud-sdk-datalab
-RUN sudo apt-get install -y google-cloud-sdk-datastore-emulator
-RUN sudo apt-get install -y google-cloud-sdk-pubsub-emulator
-RUN sudo apt-get install -y google-cloud-sdk-cbt
-RUN sudo apt-get install -y google-cloud-sdk-cloud-build-local
-RUN sudo apt-get install -y google-cloud-sdk-bigtable-emulator
-RUN sudo apt-get install -y kubectl
-
-RUN gcloud config set core/disable_usage_reporting true && \
+COPY --from=static-docker-source /usr/local/bin/docker /usr/local/bin/docker
+RUN apt-get -qqy update && apt-get install -qqy \
+        curl \
+        gcc \
+        python-dev \
+        python-setuptools \
+        apt-transport-https \
+        lsb-release \
+        openssh-client \
+        git \
+    && easy_install -U pip && \
+    pip install -U crcmod   && \
+    export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
+    echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    apt-get update && \
+    apt-get install -y google-cloud-sdk=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-app-engine-python=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-app-engine-python-extras=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-app-engine-java=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-app-engine-go=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-datalab=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-datastore-emulator=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-pubsub-emulator=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-bigtable-emulator=${CLOUD_SDK_VERSION}-0 \
+        google-cloud-sdk-cbt=${CLOUD_SDK_VERSION}-0 \
+        kubectl && \
+    gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
-    gcloud config set metrics/environment github_docker_image
+    gcloud config set metrics/environment github_docker_image && \
+    gcloud --version && \
+    docker --version && kubectl version --client
 
 RUN echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/90circleci \
   && echo 'APT::Get::force-Yes "true";' >> /etc/apt/apt.conf.d/90circleci \
