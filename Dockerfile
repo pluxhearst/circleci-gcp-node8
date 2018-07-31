@@ -1,9 +1,4 @@
-#FROM debian:stretch-slim
-
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-#RUN groupadd -r mysql && useradd -r -g mysql mysql
-
-
+## BUILD CircleCi 2.0 + node:8.2.0 + NVM + Google Cloud SDK + php5 php5-cli
 FROM docker:17.12.0-ce as static-docker-source
 
 FROM debian:jessie
@@ -106,7 +101,6 @@ RUN groupadd --gid 3434 circleci \
 
 USER circleci
 
-
 # Setup NVM Install Environment
 # ...
 ENV NPM_CONFIG_LOGLEVEL info
@@ -145,11 +139,5 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 # Set up our PATH correctly so we don't have to long-reference npm, node, &c.
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-#RUN apt-get install -y php5 php5-cli
-
-RUN npm install --save composer
-
-#RUN apt-get update && apt-get install -y
 
 CMD [ "node" ]
