@@ -143,9 +143,9 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH      $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
+RUN npm install --save composer
 
 RUN sudo apt-get install -y php5 php5-cli
-RUN sudo apt-get install -y composer
 
 RUN apt-get update && apt-get install -y
 
