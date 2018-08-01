@@ -15,6 +15,7 @@ RUN apt-get -qqy update && apt-get install -qqy \
         php5 \
         php5-cli \
         php5-curl \
+        nasm \
         python-dev \
         python-setuptools \
         apt-transport-https \
